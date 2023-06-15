@@ -2,7 +2,6 @@ import gzip
 import json
 import os
 import struct
-import numpy as np
 from .faceframe import FaceFrame
 from .poseframe import PoseFrame
 

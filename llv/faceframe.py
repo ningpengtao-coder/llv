@@ -11,7 +11,9 @@
 import struct
 import json
 import base64
-from alfred import logger
+import logging
+
+logger = logging.getLogger("faceframe")
 
 
 def remap(x, in_min, in_max, out_min, out_max):

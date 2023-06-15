@@ -18,9 +18,12 @@ import gzip
 import csv
 import math
 from .faceframe import FaceFrame, remap
-from .socketconn import Buchse
+from .socketconn import SocketConn as Buchse
 from .__init__ import version as get_version
-from alfred import logger
+import logging
+
+logger = logging.getLogger("cli")
+
 from .io import (
     is_binary_file,
     _read_frames_binary_pose,
@@ -79,7 +82,7 @@ def playback(host, port, filepath, fps, loop=True):
 
         # bytes_sent = buchse.sprech(frame.data, frame.size)
         print(frame_data)
-        bytes_sent = buchse.sprech(frame_data, len(frame_data))
+        bytes_sent = buchse.send(frame_data, len(frame_data))
         if bytes_sent != len(frame_data):
             raise Exception(
                 f"Error sending full frame! ({bytes_sent}/{len(frame_data)})"
@@ -113,7 +116,7 @@ def playback_pose(host, port, filepath, fps, loop=True):
 
         frame = PoseFrame.from_raw(frame_data, len(frame_data))
         # logger.info(f'frame.size {frame.size}')
-        bytes_sent = buchse.sprech(frame.data, frame.size)
+        bytes_sent = buchse.send(frame.data, frame.size)
         # print(frame_data)
         # bytes_sent = buchse.sprech(frame_data, len(frame_data))
         if bytes_sent != len(frame_data):
@@ -149,7 +152,7 @@ def record(host, port, frames, output, with_raw_frame=False):
                 print("Stopping playback ...")
                 break
 
-            data, size = buchse.horch(FaceFrame.PACKET_MAX_SIZE)
+            data, size = buchse.receive(FaceFrame.PACKET_MAX_SIZE)
             if not data or 0 == size:
                 print(f"Received empty frame, skipping ...")
                 continue

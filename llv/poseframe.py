@@ -11,9 +11,10 @@ then sending to UE, remap to metahuman
 import base64
 import json
 import struct
-from loguru import logger
-import numpy as np
+import logging
 import os
+
+logger = logging.getLogger("poseframe")
 
 
 def load_from_binary():
