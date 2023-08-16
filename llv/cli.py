@@ -78,11 +78,11 @@ def playback(host, port, filepath, fps, loop=True):
                 f"Start sending {frame_count} frames of version {version} @{fps}fps ..."
             )
 
-        # frame = FaceFrame.from_raw(frame_data, len(frame_data))
+        frame = FaceFrame.from_raw(frame_data, len(frame_data))
 
-        # bytes_sent = buchse.sprech(frame.data, frame.size)
-        print(frame_data)
-        bytes_sent = buchse.send(frame_data, len(frame_data))
+        bytes_sent = buchse.send(frame.data, frame.size)
+        # print(frame_data)
+        # bytes_sent = buchse.send(frame_data, len(frame_data))
         if bytes_sent != len(frame_data):
             raise Exception(
                 f"Error sending full frame! ({bytes_sent}/{len(frame_data)})"
